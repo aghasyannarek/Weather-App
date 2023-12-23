@@ -44,7 +44,7 @@ function Main_component(){
             SetElementStyles({
                 margin: '0',
                 borderRadius: '0px',
-                height:'100vh',
+                height:'100%',
             });
             SetChange({
                 display:'none',
@@ -115,7 +115,9 @@ function Main_component(){
                                     <span>°C</span>
                                 </div>
                             </div>
-                            <footer className='footer'>This App Created by Narek Aghasyan</footer>
+                            <footer className='footer'>
+                                <div>This App Created by Narek Aghasyan</div>
+                            </footer>
                         </>                 
                     }
                     <input 
