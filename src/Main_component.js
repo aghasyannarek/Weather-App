@@ -1,10 +1,11 @@
 import './App.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateTimeComponent from './DateTimeComponent';
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon';
-
-
+import Button from './components/Button/Button';
+import SearchInput from './components/Input/SearchInput';
+import Footer from './components/footer/Footer';
 
 function Main_component(){
     const [inputValue,SetInputValue] = useState("")
@@ -14,63 +15,68 @@ function Main_component(){
     const [state, setState] = useState("-");
     const [ fs,setFs ] = useState();
     const [weatherData, setWeatherData] = useState("--");
+    const [error, setError] = useState(false);
     const API_KEY = '289fa4de5f0876e68a81e6a23efbf46f';
     const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
     let weatherApp = 'Weather App';
     let city = inputValue;
-    
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (inputValue.trim()) {
+                fetchData();
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [inputValue]);
+
     const fetchData = async () => {
-        try {
-            const response = await axios.get(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
-            if (response.status === 200) {
+            if(!inputValue.trim()){
+                setError(true);
+                return;
+            }
+            try {
+                const response = await axios.get(`${API_URL}?q=${inputValue}&appid=${API_KEY}&units=metric`);
+                setError(false);
                 setState(`${Math.round(response.data.main.temp)}`);
                 setWeatherData(response.data);
-            } else {
-                console.error('Error: Unexpected response status:', response.status);
+            } catch (err) {
+                setError(true);
+                SetInputValue("");
             }
-        } catch (error) {
-            if (error.response) {
-                console.error('Error: Server responded with an error:', error.response.data);
-            } else if (error.request) {
-                console.error('Error: No response received from the server');
-            } else {
-                console.error('Error:', error.message);
-            }
-        }
-    };    
+    }       
     const handleClick = (e) => {
         e.preventDefault();
-        if(inputValue){
-            SetElementStyles({
-                margin: '0',
-                borderRadius: '0px',
-                height:'100%',
-            });
-            SetChange({
-                display:'none',
-            });
-            SetShowDiv(!showDiv);
-            fetchData();
-            if(city.length > 8 ){
-                setFs({
-                    fontSize: '50px'
+        if(inputValue && !error){
+                SetElementStyles({
+                    margin: '0',
+                    borderRadius: '0px',
+                    height:'100%',
                 });
+                SetChange({
+                    display:'none',
+                });
+                SetShowDiv(!showDiv);
+                if(city.length > 8 ){
+                    setFs({
+                        fontSize: '50px'
+                    });
+                }
+            } else {
+                setError(true);
             }
-        }else{
-            weatherApp = "";
-        }
     }
     const btnHandleClick = (e) => {
         e.preventDefault();
-        SetElementStyles({
-            height: '100%',
-            marginTop: '300px',
-            borderRadius: '70px 70px 0 0',
-        });
-        SetChange({
-            display:'block',
-        });
-        SetShowDiv(!showDiv);        
+            SetElementStyles({
+                height: '100%',
+                marginTop: '300px',
+                borderRadius: '70px 70px 0 0',
+            });
+            SetChange({
+                display:'block',
+            });
+            SetShowDiv(!showDiv);        
     }
     const handleChange = (e) =>{
         SetInputValue(e.target.value);
@@ -83,7 +89,7 @@ function Main_component(){
                 </p>
                 <div className="circle" style={elementStyles}>
                     {
-                       showDiv && <>
+                        showDiv && <>
                             <button 
                                 className="addedBtn" 
                                 type="button" 
@@ -108,7 +114,7 @@ function Main_component(){
                                 <div className="temperature-icon">
                                     <div className='img'>
                                         {weatherData && weatherData.weather?.length > 0 && ( 
-                                            <WeatherIcon className="imgComp" weatherCode={weatherData.weather[0]?.icon} />
+                                            <WeatherIcon weatherCode={weatherData.weather[0]?.icon} />
                                         )}
                                     </div>
                                     <span className='num'>{state}</span>
@@ -116,24 +122,13 @@ function Main_component(){
                                 </div>
                             </div>
                             <footer className='footer'>
-                                <div>This App Created by Narek Aghasyan</div>
+                                <div>This app was created by Narek Aghasyan</div>
                             </footer>
                         </>                 
                     }
-                    <input 
-                        className="Searchinput" 
-                        style={change} 
-                        type="Search" 
-                        placeholder="Enter City Name" 
-                        onChange={handleChange}
-                    />
-                    <input 
-                        className="btn" 
-                        style={change} 
-                        type="button" 
-                        value="Search" 
-                        onClick={handleClick}
-                    />
+                    <SearchInput style={change} onChange={handleChange}/>
+                    <Button Click={handleClick} style={change}/>
+                    {error && <p style={{color: "red", paddingTop: "20px", fontSize: "20px"}}>Invalid City Name</p>}
                 </div>
             </div>
         </div>
