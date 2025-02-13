@@ -1,11 +1,10 @@
 import './App.css';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DateTimeComponent from './DateTimeComponent';
 import axios from 'axios';
 import WeatherIcon from './WeatherIcon';
-import Button from './components/Button/Button';
-import SearchInput from './components/Input/SearchInput';
-import Footer from './components/footer/Footer';
+import Button from './components/Button';
+import SearchInput from './components/SearchInput';
 
 function Main_component(){
     const [inputValue,SetInputValue] = useState("")
@@ -20,15 +19,6 @@ function Main_component(){
     const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
     let weatherApp = 'Weather App';
     let city = inputValue;
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (inputValue.trim()) {
-                fetchData();
-            }
-        }, 500);
-        return () => clearTimeout(timer);
-    }, [inputValue]);
 
     const fetchData = async () => {
             if(!inputValue.trim()){
@@ -47,7 +37,8 @@ function Main_component(){
     }       
     const handleClick = (e) => {
         e.preventDefault();
-        if(inputValue && !error){
+        if(inputValue.trim() && error){
+                fetchData();
                 SetElementStyles({
                     margin: '0',
                     borderRadius: '0px',
