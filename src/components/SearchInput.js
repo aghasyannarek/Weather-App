@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchInput = ({ style, onChange }) => {
+const SearchInput = ({ style, onChange,onKeyDown }) => {
     return (
         <input
             type="text"
@@ -8,6 +8,7 @@ const SearchInput = ({ style, onChange }) => {
             style={style}
             placeholder="Enter city name"
             onChange={onChange}
+            onKeyDown={onKeyDown}
         />
     );
 };

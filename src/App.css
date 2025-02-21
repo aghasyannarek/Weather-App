@@ -100,6 +100,7 @@ input:focus {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   cursor: pointer;
 }
+
 .circle .addedBtn {
   width: 70px;
   height: 70px;
@@ -111,6 +112,14 @@ input:focus {
   flex: none;
   margin-left: -440px;
   transition: 0.3s;
+  outline: none;
+}
+.circle .addedBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.circle .addedBtn:focus {
+  box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.7);
 }
 
 .temp {
@@ -156,8 +165,8 @@ input:focus {
   margin-top: 50px;
 }
 .city > svg{
- width: 55px;
- height: 55px;
+  width: 55px;
+  height: 55px;
 }
 
 .footer{
@@ -174,9 +183,8 @@ input:focus {
 }
 
 @media screen and (max-width: 500px) {
-  /* Adjust styles for screens with a maximum width of 600px */
   .Main {
-   width: 420px;
+    width: 420px;
   }
   .Main .title{
     font-size: 50px;
@@ -215,12 +223,11 @@ input:focus {
     font-size: 15px;
   }
 
-  /* Add more responsive styles as needed */
+
 }
 @media screen and (max-width: 420px) {
-  /* Adjust styles for screens with a maximum width of 600px */
   .Main {
-   width: 360px;
+    width: 360px;
   }
   .Main .title{
     font-size: 35px;
@@ -237,6 +244,4 @@ input:focus {
     width: 35px;
     height: 35px;
   }
-
-  /* Add more responsive styles as needed */
 }
